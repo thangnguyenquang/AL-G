@@ -52,20 +52,20 @@
     <Compile Include="FormMain.Designer.cs">
       <DependentUpon>FormMain.cs</DependentUpon>
     </Compile>
-    <Compile Include="LinkedList.cs" />
-    <Compile Include="Node.cs">
+    <Compile Include="Graph.cs" />
+    <Compile Include="Dinh.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Node.Designer.cs">
-      <DependentUpon>Node.cs</DependentUpon>
+    <Compile Include="Dinh.Designer.cs">
+      <DependentUpon>Dinh.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <EmbeddedResource Include="FormMain.resx">
       <DependentUpon>FormMain.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Node.resx">
-      <DependentUpon>Node.cs</DependentUpon>
+    <EmbeddedResource Include="Dinh.resx">
+      <DependentUpon>Dinh.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

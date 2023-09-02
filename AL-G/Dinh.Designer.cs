@@ -1,7 +1,7 @@
 ﻿
 namespace AL_G
 {
-    partial class Node
+    partial class Dinh
     {
         /// <summary> 
         /// Required designer variable.

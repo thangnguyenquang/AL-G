@@ -13,9 +13,9 @@ namespace AL_G
 {
     public partial class FormMain : Form
     {
-        List<Node> node = new List<Node>();
+        List<Dinh> dinh = new List<Dinh>();
         Graphics g;
-        Random r = new Random();
+        Random random = new Random();
         public FormMain()
         {
             InitializeComponent();
@@ -39,12 +39,16 @@ namespace AL_G
                 return;
             }
 
+            else
+            {
+                dgvDsk.Visible = true;
+            }
             dgvDsk.ColumnCount = soDinh;
             dgvDsk.RowCount = soDinh;
 
             for (int i = 0; i < soDinh; i++)
             {
-                dgvDsk.Rows[i].HeaderCell.Value = "" + (i + 1) + "";
+                dgvDsk.Rows[i].HeaderCell.Value = "" + i + "";
                 dgvDsk.Columns[i].SortMode = DataGridViewColumnSortMode.NotSortable;
             }
         }
@@ -67,25 +71,25 @@ namespace AL_G
         }
         private void TaoDinh()
         {
-            node = new List<Node>();
+            dinh = new List<Dinh>();
             for (int i = 0; i < soDinh; i++)
             {
-                Node n = new Node();
-                n.Location = new Point(r.Next(5, 610), r.Next(5, 510));
-                n.Location = listPoint[i];
-                n.ID = (i);
-                n.Ten.Text = (i).ToString();
+                Dinh d = new Dinh();
+                d.Location = new Point(random.Next(5, 610), random.Next(5, 510));
+                d.Location = listPoint[i];
+                d.ID = (i);
+                d.Ten.Text = (i).ToString();
                 //n.MouseDown += new MouseEventHandler(Node_MouseDown);
                 //n.MouseUp += new MouseEventHandler(Node_MouseUp);
-                node.Add(n);
+                dinh.Add(d);
             }
         }
         private void HienDinh()
         {
             pbDoThi.Controls.Clear();
-            for (int i = 0; i < node.Count; i++)
-                if (node[i].ID != -1)
-                    pbDoThi.Controls.Add(node[i]);
+            for (int i = 0; i < dinh.Count; i++)
+                if (dinh[i].ID != -1)
+                    pbDoThi.Controls.Add(dinh[i]);
         }
         private void NoiDinh()
         {
@@ -106,39 +110,39 @@ namespace AL_G
             {
                 if (coTrongSo && listDinhTrongSo.Count > 0)
                 {
-                    for (int j = 0; j < listDinhTrongSo[i].Count; j++)
+                    for (int j = 0; j < listDinhTrongSo[i].Count - 1; j++)
                     {
                         int k = listDinhTrongSo[i][j][0];
                         if (k < 0) continue;
                         int trongso = listDinhTrongSo[i][j][1];
-                        int x = Math.Abs(node[i].Tam.X + node[k].Tam.X);
+                        int x = Math.Abs(dinh[i].Tam.X + dinh[k].Tam.X);
                         x = x / 2;
-                        int y = Math.Abs(node[i].Tam.Y + node[k].Tam.Y);
+                        int y = Math.Abs(dinh[i].Tam.Y + dinh[k].Tam.Y);
                         y = y / 2;
 
                         Point trungdiem = new Point(x, y);
 
-                        g.DrawLine(p, node[i].Tam, trungdiem);
-                        g.DrawLine(p, trungdiem, node[k].Tam);
+                        g.DrawLine(p, dinh[i].Tam, trungdiem);
+                        g.DrawLine(p, trungdiem, dinh[k].Tam);
 
                         g.DrawString(trongso.ToString(), this.Font, Brushes.Black, x + 6, y + 6);
                     }
                 }
                 else if (listDinh[i].Count > 0)
                 {
-                    for (int j = 0; j < listDinh[i].Count; j++)
+                    for (int j = 0; j < listDinh[i].Count -1; j++)
                     {
                         int k = listDinh[i][j];
                         if (k < 0) continue;
-                        int x = Math.Abs(node[i].Tam.X + node[k].Tam.X);
+                        int x = Math.Abs(dinh[i].Tam.X + dinh[k].Tam.X);
                         x = x / 2;
-                        int y = Math.Abs(node[i].Tam.Y + node[k].Tam.Y);
+                        int y = Math.Abs(dinh[i].Tam.Y + dinh[k].Tam.Y);
                         y = y / 2;
 
                         Point trungdiem = new Point(x, y);
 
-                        g.DrawLine(p, node[i].Tam, trungdiem);
-                        g.DrawLine(p, trungdiem, node[k].Tam);
+                        g.DrawLine(p, dinh[i].Tam, trungdiem);
+                        g.DrawLine(p, trungdiem, dinh[k].Tam);
                     }
                 }
             }
@@ -186,11 +190,11 @@ namespace AL_G
 
         private bool KiemTraTrungDinhTrongSo(int dinhKe, List<int[]> listDinhke)// Check nếu đỉnh đã tồn tại trong ds thì k add nó
         {
-            for (int i = 0; i < listDinhke.Count; i++)
+            for (int i = 0; i < listDinhke.Count -1; i++)
             {
                 if (dinhKe == listDinhke[i][0])
                 {
-                    return true;// trùng
+                    return true;
                 }
             }
             return false;
@@ -198,14 +202,14 @@ namespace AL_G
 
         private void btnRandom_Click(object sender, EventArgs e)
         {
-            Random r = new Random();
+            Random random = new Random();
             if (!string.IsNullOrEmpty(txtSlDinh.Text))
             {
                 soDinh = int.Parse(txtSlDinh.Text);
             }
             else
             {
-                soDinh = r.Next(2, 12);
+                soDinh = random.Next(2, 12);
             }
             if (soDinh <= 1)
             {
@@ -213,37 +217,17 @@ namespace AL_G
                 return;
             }
             int soDinhKe;
-            if (!coTrongSo)
-            {
-                int dinhKe;
-                for (int i = 0; i < soDinh; i++)
-                {
-                    soDinhKe = soDinh / r.Next(1, 5);
-                    for (int j = 0; j < soDinhKe; j++)
-                    {
-                        dinhKe = r.Next(1, soDinh);
-                        if (listDinhKe.Contains(dinhKe))
-                            continue;
-                        else
-                        {
-                            listDinhKe.Add(dinhKe);
-                        }
-                    }
-                    listDinh.Add(listDinhKe);
-                }
-                VeDoThi();
-            }
-            else
+            if (coTrongSo)
             {
                 int dinhKe;
                 int trongSo;
                 for (int i = 0; i < soDinh; i++)
                 {
-                    soDinhKe = soDinh / r.Next(1, 5);
+                    soDinhKe = soDinh / random.Next(1, 5);
                     for (int j = 0; j < soDinhKe; j++)
                     {
-                        dinhKe = r.Next(0, soDinh);
-                        trongSo = r.Next(1, 10);
+                        dinhKe = random.Next(1, soDinh);
+                        trongSo = random.Next(1, 10);
                         if (dinhKe == i)
                             continue;
                         else if (!KiemTraTrungDinhTrongSo(dinhKe, listDinhKeTrongSo))
@@ -253,6 +237,26 @@ namespace AL_G
                     }
                     listDinhTrongSo.Add(listDinhKeTrongSo);
                 }
+                HienDanhSachKe();
+                VeDoThi();
+            }
+            else
+            {
+                int dinhKe;
+                for (int i = 0; i < soDinh; i++)
+                {
+                    soDinhKe = soDinh / random.Next(1, 5);
+                    for (int j = 0; j < soDinhKe; j++)
+                    {
+                        dinhKe = random.Next(1, soDinh);
+                        if (!listDinhKe.Contains(dinhKe))
+                        {
+                            listDinhKe.Add(dinhKe);
+                        }
+                    }
+                    listDinh.Add(listDinhKe);
+                }
+                HienDanhSachKe();
                 VeDoThi();
             }
             //if (dske.isDiGraph)
@@ -265,6 +269,24 @@ namespace AL_G
             //    ValidateUndirectedGraph();
             //}
         }
+
+        private void HienDanhSachKe()
+        {
+            dgvDsk.Visible = true;
+            dgvDsk.ColumnCount = listDinh.Count;
+            dgvDsk.RowCount = listDinh.Count;
+            dgvDsk.ReadOnly = true;
+            for (int i = 0; i < listDinh.Count - 1; i++)
+            {
+                dgvDsk.Rows[i].HeaderCell.Value = "Đỉnh " + i + "";
+
+                for (int j = 0; j < listDinh[i].Count - 1; j++)
+                {
+                    dgvDsk.Rows[i].Cells[j].Value = listDinh[i][j].ToString();
+                }
+            }
+        }
+
         private void Clear()
         {
 

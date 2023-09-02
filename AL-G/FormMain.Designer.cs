@@ -50,8 +50,9 @@ namespace AL_G
             this.dgvDsk.Name = "dgvDsk";
             this.dgvDsk.RowHeadersWidth = 51;
             this.dgvDsk.RowTemplate.Height = 24;
-            this.dgvDsk.Size = new System.Drawing.Size(508, 349);
+            this.dgvDsk.Size = new System.Drawing.Size(549, 481);
             this.dgvDsk.TabIndex = 0;
+            this.dgvDsk.Visible = false;
             // 
             // txtSlDinh
             // 
@@ -59,7 +60,7 @@ namespace AL_G
             this.txtSlDinh.Location = new System.Drawing.Point(113, 45);
             this.txtSlDinh.Multiline = true;
             this.txtSlDinh.Name = "txtSlDinh";
-            this.txtSlDinh.Size = new System.Drawing.Size(137, 40);
+            this.txtSlDinh.Size = new System.Drawing.Size(106, 40);
             this.txtSlDinh.TabIndex = 1;
             // 
             // lblSlDinh
@@ -75,7 +76,7 @@ namespace AL_G
             // btnNhapDinh
             // 
             this.btnNhapDinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNhapDinh.Location = new System.Drawing.Point(286, 45);
+            this.btnNhapDinh.Location = new System.Drawing.Point(240, 45);
             this.btnNhapDinh.Name = "btnNhapDinh";
             this.btnNhapDinh.Size = new System.Drawing.Size(100, 40);
             this.btnNhapDinh.TabIndex = 3;
@@ -119,9 +120,9 @@ namespace AL_G
             // btnRandom
             // 
             this.btnRandom.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRandom.Location = new System.Drawing.Point(414, 45);
+            this.btnRandom.Location = new System.Drawing.Point(365, 45);
             this.btnRandom.Name = "btnRandom";
-            this.btnRandom.Size = new System.Drawing.Size(147, 40);
+            this.btnRandom.Size = new System.Drawing.Size(196, 40);
             this.btnRandom.TabIndex = 7;
             this.btnRandom.Text = "Ngẫu nhiên";
             this.btnRandom.UseVisualStyleBackColor = true;

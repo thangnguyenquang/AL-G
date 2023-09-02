@@ -11,9 +11,9 @@ using System.Windows.Forms;
 
 namespace AL_G
 {
-    public partial class Node : UserControl
+    public partial class Dinh : UserControl
     {
-        public Node()
+        public Dinh()
         {
             InitializeComponent();
             GraphicsPath path = new GraphicsPath();
