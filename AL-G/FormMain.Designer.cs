@@ -37,6 +37,7 @@ namespace AL_G
             this.chkbCoHuong = new System.Windows.Forms.CheckBox();
             this.chkbCoTrongSo = new System.Windows.Forms.CheckBox();
             this.btnRandom = new System.Windows.Forms.Button();
+            this.btnVeDoThi = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDsk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDoThi)).BeginInit();
             this.SuspendLayout();
@@ -46,13 +47,12 @@ namespace AL_G
             this.dgvDsk.AllowUserToAddRows = false;
             this.dgvDsk.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dgvDsk.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dgvDsk.Location = new System.Drawing.Point(12, 221);
+            this.dgvDsk.Location = new System.Drawing.Point(17, 221);
             this.dgvDsk.Name = "dgvDsk";
-            this.dgvDsk.RowHeadersWidth = 51;
+            this.dgvDsk.RowHeadersWidth = 90;
             this.dgvDsk.RowTemplate.Height = 24;
-            this.dgvDsk.Size = new System.Drawing.Size(549, 481);
+            this.dgvDsk.Size = new System.Drawing.Size(596, 481);
             this.dgvDsk.TabIndex = 0;
-            this.dgvDsk.Visible = false;
             // 
             // txtSlDinh
             // 
@@ -78,7 +78,7 @@ namespace AL_G
             this.btnNhapDinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnNhapDinh.Location = new System.Drawing.Point(240, 45);
             this.btnNhapDinh.Name = "btnNhapDinh";
-            this.btnNhapDinh.Size = new System.Drawing.Size(100, 40);
+            this.btnNhapDinh.Size = new System.Drawing.Size(158, 40);
             this.btnNhapDinh.TabIndex = 3;
             this.btnNhapDinh.Text = "Nhập đỉnh";
             this.btnNhapDinh.UseVisualStyleBackColor = true;
@@ -86,9 +86,9 @@ namespace AL_G
             // 
             // pbDoThi
             // 
-            this.pbDoThi.Location = new System.Drawing.Point(585, 48);
+            this.pbDoThi.Location = new System.Drawing.Point(643, 48);
             this.pbDoThi.Name = "pbDoThi";
-            this.pbDoThi.Size = new System.Drawing.Size(854, 654);
+            this.pbDoThi.Size = new System.Drawing.Size(857, 654);
             this.pbDoThi.TabIndex = 4;
             this.pbDoThi.TabStop = false;
             this.pbDoThi.Paint += new System.Windows.Forms.PaintEventHandler(this.pbDoThi_Paint);
@@ -120,19 +120,31 @@ namespace AL_G
             // btnRandom
             // 
             this.btnRandom.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRandom.Location = new System.Drawing.Point(365, 45);
+            this.btnRandom.Location = new System.Drawing.Point(433, 45);
             this.btnRandom.Name = "btnRandom";
-            this.btnRandom.Size = new System.Drawing.Size(196, 40);
+            this.btnRandom.Size = new System.Drawing.Size(180, 40);
             this.btnRandom.TabIndex = 7;
             this.btnRandom.Text = "Ngẫu nhiên";
             this.btnRandom.UseVisualStyleBackColor = true;
             this.btnRandom.Click += new System.EventHandler(this.btnRandom_Click);
             // 
+            // btnVeDoThi
+            // 
+            this.btnVeDoThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnVeDoThi.Location = new System.Drawing.Point(433, 128);
+            this.btnVeDoThi.Name = "btnVeDoThi";
+            this.btnVeDoThi.Size = new System.Drawing.Size(180, 40);
+            this.btnVeDoThi.TabIndex = 8;
+            this.btnVeDoThi.Text = "Vẽ đồ thị";
+            this.btnVeDoThi.UseVisualStyleBackColor = true;
+            this.btnVeDoThi.Click += new System.EventHandler(this.btnVeDoThi_Click);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1482, 753);
+            this.ClientSize = new System.Drawing.Size(1512, 753);
+            this.Controls.Add(this.btnVeDoThi);
             this.Controls.Add(this.btnRandom);
             this.Controls.Add(this.chkbCoTrongSo);
             this.Controls.Add(this.chkbCoHuong);
@@ -160,6 +172,7 @@ namespace AL_G
         private System.Windows.Forms.CheckBox chkbCoHuong;
         private System.Windows.Forms.CheckBox chkbCoTrongSo;
         private System.Windows.Forms.Button btnRandom;
+        private System.Windows.Forms.Button btnVeDoThi;
     }
 }
 
