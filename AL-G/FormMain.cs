@@ -4,6 +4,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -22,9 +23,9 @@ namespace AL_G
         }
 
         int soDinh;
-
         public bool coHuong = false;
         public bool coTrongSo = false;
+
 
         private void btnNhapDinh_Click(object sender, EventArgs e)
         {
@@ -190,6 +191,8 @@ namespace AL_G
 
         private void btnRandom_Click(object sender, EventArgs e)
         {
+            Timming timming = new Timming();
+            timming.Start();
             dgvDsk.Rows.Clear();
             Random random = new Random();
             if (!string.IsNullOrEmpty(txtSlDinh.Text))
@@ -258,6 +261,48 @@ namespace AL_G
             //{
             //    ValidateUndirectedGraph();
             //}
+            timming.Stop();
+            txtTimming.Text = $"{timming.Time()} (ms)";
+        }
+
+        private void DTVoHuong(DoThi doThi)
+        {
+            //if (coTrongSo)
+            //{
+            //    for (int i = 0; i < soDinh; i++)
+            //    {
+            //        Node node = doThi.Lists[i];
+            //        while (node != null)
+            //        {
+            //            while (dinhKe == i || doThi.KiemTraDinh(i, dinhKe))
+            //            {
+            //                dinhKe = random.Next(0, soDinh);
+            //            }
+            //            trongSo = random.Next(1, 10);
+            //            doThi.ThemCanh(i, dinhKe, trongSo);
+            //        }
+            //    }
+            //    HienDanhSachKe(doThi);
+            //    VeDoThi(doThi);
+            //}
+            //else
+            //{
+            //    int dinhKe;
+            //    for (int i = 0; i < soDinh; i++)
+            //    {
+            //        soDinhKe = random.Next(1, soDinh - 1);
+            //        for (int j = 0; j < soDinhKe; j++)
+            //        {
+            //            dinhKe = random.Next(0, soDinh);
+            //            while (dinhKe == i || doThi.KiemTraDinh(i, dinhKe))
+            //            {
+            //                dinhKe = random.Next(0, soDinh);
+            //            }
+
+            //            doThi.ThemCanh(i, dinhKe);
+            //        }
+            //    }
+            //}
         }
 
         private void HienDanhSachKe(DoThi doThi)
@@ -305,6 +350,181 @@ namespace AL_G
             }
             HienDanhSachKe(doThi);
             VeDoThi(doThi);
+        }
+
+        private void btnLuuDT_Click(object sender, EventArgs e)
+        {
+            SaveFileDialog saveFile = new SaveFileDialog();
+            saveFile.Filter = ".txt|*.txt";
+
+            if (soDinh != 0)
+            {
+                DialogResult result = saveFile.ShowDialog();
+                if (result == DialogResult.OK)
+                {
+                    string filePath = saveFile.FileName;
+                    FileStream fs = new FileStream(filePath, FileMode.Create);
+                    StreamWriter sWriter = new StreamWriter(fs, Encoding.UTF8);
+                    sWriter.Write(soDinh);
+                    sWriter.WriteLine();
+                    if (coTrongSo)
+                    {
+                        for (int i = 0; i < dgvDsk.Rows.Count; i++)
+                        {
+                            int j = 0;
+                            while (dgvDsk.Rows[i].Cells[j].Value != null)
+                            {
+                                if (!string.IsNullOrEmpty(dgvDsk.Rows[i].Cells[j].Value.ToString()))
+                                {
+                                    if (dgvDsk.Rows[i].Cells[j + 1].Value == null)
+                                    {
+                                        sWriter.Write(dgvDsk.Rows[i].Cells[j].Value.ToString());
+                                        sWriter.WriteLine();
+                                    }
+                                    else
+                                    {
+                                        sWriter.Write(dgvDsk.Rows[i].Cells[j].Value.ToString() + " ");
+                                    }
+                                }
+                                j++;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < dgvDsk.Rows.Count; i++)
+                        {
+                            int j = 0;
+                            while (dgvDsk.Rows[i].Cells[j].Value != null)
+                            {
+                                if (!string.IsNullOrEmpty(dgvDsk.Rows[i].Cells[j].Value.ToString()))
+                                {
+                                    if (dgvDsk.Rows[i].Cells[j+1].Value == null)
+                                    {
+                                        sWriter.Write(dgvDsk.Rows[i].Cells[j].Value.ToString());
+                                        sWriter.WriteLine();
+                                    }
+                                    else
+                                    {
+                                        sWriter.Write(dgvDsk.Rows[i].Cells[j].Value.ToString() + " ");
+                                    }
+                                }
+                                j++;
+                            }
+                        }
+                    }
+                    sWriter.Flush();
+                    fs.Close();
+                    MessageBox.Show("Lưu File thành công");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Bạn chưa nhập đồ thị?");
+            }
+        }
+
+        private void btnDocFile_Click(object sender, EventArgs e)
+        {
+            //// Tạo chuỗi input
+            //string input = "4(5) 3(7) 1(3) 7(9) 6(5)";
+
+            //// Tạo một biến để lưu trữ kết quả
+            //List<int> results = new List<int>();
+
+            //// Lặp qua từng ký tự trong chuỗi input
+            //for (int i = 0; i < input.Length; i++)
+            //{
+            //    // Kiểm tra xem ký tự hiện tại là dấu ngoặc mở hay không
+            //    if (input[i] == '(')
+            //    {
+            //        // Tìm kiếm dấu ngoặc đóng tiếp theo
+            //        int indexClose = input.IndexOf(')', i + 1);
+
+            //        // Nếu tìm thấy dấu ngoặc đóng
+            //        if (indexClose > 0)
+            //        {
+            //            // Lấy giá trị của số
+            //            string number = input.Substring(i + 1, indexClose - i - 1);
+
+            //            // Thêm số vào danh sách kết quả
+            //            results.Add(int.Parse(number));
+            //        }
+            //    }
+            //}
+
+            //// In ra kết quả
+            //foreach (int result in results)
+            //{
+            //    Console.WriteLine(result);
+            //}
+            //try
+            //{
+            //    OpenFileDialog open = new OpenFileDialog();
+            //    open.Filter = ".txt|*.txt";
+            //    DialogResult tl = open.ShowDialog();
+            //    FileStream fs = new FileStream(open.FileName, FileMode.Open);
+            //    StreamReader doc = new StreamReader(fs);
+            //    string data;
+            //    soDinh = 0;
+            //    while (doc.Peek() > -1)
+            //    {
+            //        data = doc.ReadLine();
+            //        if (!string.IsNullOrEmpty(data))
+            //        {
+            //            if (data.Contains("("))
+            //            {
+            //                coTrongSo = true;
+            //                chkbCoTrongSo.Checked = true;
+            //                string[] dinhKe = data.Split(' ');
+            //                for (int i = 0; i < dinhKe.Count(); i++)
+            //                {
+            //                    if (String.Compare(dinhKe.GetValue(i).ToString(), @"-1") == 0)// "-1 là đỉnh đó k có đỉnh kề"
+            //                    {
+            //                        lsDinhKeCoTrongSo.Add(new int[] { -1, 0 });
+            //                    }
+            //                    else
+            //                    {
+            //                        string[] dinhVaTrongSo = dinhKe.GetValue(i).ToString().Split('|');
+            //                        lsDinhKeCoTrongSo.Add(new int[] { int.Parse(dinhVaTrongSo[0].ToString()), int.Parse(dinhVaTrongSo[1].ToString()) });
+            //                    }
+            //                }
+            //                lsDinhTrongSo.Add(lsDinhKeCoTrongSo);
+            //            }
+            //            else
+            //            {
+            //                isWeightedGraph = false;
+            //                string[] dinhKe = s.Split(' '); 
+            //                for (int i = 0; i < dinhKe.Count(); i++)
+            //                {
+            //                    if (String.Compare(dinhKe.GetValue(i).ToString(), @"-1") == 0)// 
+            //                    {
+            //                        lsDinhKe.Add(-1);
+
+            //                    }
+            //                    else
+            //                    {
+            //                        int a = int.Parse(dinhKe.GetValue(i).ToString());
+            //                        lsDinhKe.Add(a);
+            //                    }
+            //                }
+            //                lsDinh.Add(lsDinhKe);
+            //            }
+            //        }
+            //        SoDinh += 1;
+            //    }
+            //    doc.Dispose();
+            //    fs.Dispose();
+            //    if (tl == DialogResult.OK)
+            //    {
+
+            //    }
+            //    LoadDoThi();
+            //}
+            //catch
+            //{
+            //    MessageBox.Show("Vui lòng kiểm tra File đầu vào");
+            //}
         }
     }
 }

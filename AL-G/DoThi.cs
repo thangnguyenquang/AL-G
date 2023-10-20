@@ -57,19 +57,19 @@ namespace AL_G
         // Kiểm tra đỉnh kề thêm vào đã tồn tại chưa
         public bool KiemTraDinh(int src, int dinh)
         {
-            bool trung = false;
+            bool tonTai = false;
             Node node = this.Lists[src];
             while (node != null)
             {
                 if (node.Dinh == dinh)
                 {
                     // Đỉnh kề tồn tại
-                    trung = true;
+                    tonTai = true;
                     break;
                 }
                 node = node.Next;
             }
-            return trung;
+            return tonTai;
         }
 
         public void InDoThi()
