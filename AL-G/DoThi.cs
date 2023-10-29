@@ -23,6 +23,11 @@ namespace AL_G
             this.Dinh = dinh;
             this.Next = null;
         }
+
+        public Node()
+        {
+
+        }
     }
 
     class DoThi
@@ -149,35 +154,26 @@ namespace AL_G
             }
             return tonTai;
         }
-
-        public void InDoThi()
-        {
-            for (int i = 0; i < this.soDinh; i++)
-            {
-                Console.WriteLine("Đỉnh {0}:", i);
-                Node node = this.Lists[i];
-                while (node != null)
-                {
-                    Console.WriteLine(" -> {0}, ({1})", node.Dinh, node.TrongSo);
-                    node = node.Next;
-                }
-            }
-        }
     }
+
     class DoThiStack
     {
         public int top;
         public int soDinh;
-        public Node[] Lists;
+        public Node[][] Lists;
 
         public DoThiStack(int soDinh)
         {
             this.top = -1;
             this.soDinh = soDinh;
-            this.Lists = new Node[soDinh];
+            this.Lists = new Node[soDinh][];
             for (int i = 0; i < soDinh; i++)
             {
-                this.Lists[i] = null;
+                this.Lists[i] = new Node[soDinh];
+                for (int j = 0; j < soDinh; j++)
+                {
+                    this.Lists[i][j] = null;
+                }
             }
         }
 
@@ -202,15 +198,18 @@ namespace AL_G
             if (!IsFull())
             {
                 top = top + 1;
-                this.Lists[top] = newNode;
+                this.Lists[src][top] = newNode;
             }
         }
 
         public void ThemCanh(int src, int des)
         {
             Node newNode = new Node(des);
-            newNode.Next = this.Lists[src];
-            this.Lists[src] = newNode;
+            if (!IsFull())
+            {
+                top = top + 1;
+                this.Lists[src][top] = newNode;
+            }
         }
 
         //public void ThemCanh(int src, int des)
@@ -231,20 +230,20 @@ namespace AL_G
         //    }
         //}
 
-        public int TrongSoCanh(int src, int des)
+        //Pop
+        public Node LayCanh(int src)
         {
-            int trongSo = 0;
-            Node node = this.Lists[src];
-            while (node != null)
+            Node node;
+            if (!IsEmpty())
             {
-                if (node.Dinh == des)
-                {
-                    trongSo = node.TrongSo;
-                    break;
-                }
-                node = node.Next;
+                node = this.Lists[src][top];
+                top = top - 1;
+                return node;
             }
-            return trongSo;
+            else
+            {
+                return null;
+            }
         }
 
         public void XoaCanh(int src, int des)
@@ -253,23 +252,16 @@ namespace AL_G
             {
                 return;
             }
-            Node node = this.Lists[src];
-            Node prevNode = null;
-            while (node != null && node.Dinh != des)
+            Node[] node = this.Lists[src];
+            for (int i = 0; i < node.Count(x => x != null); i++)
             {
-                if (node.Dinh == des)
+                if (node[i]?.Dinh == des)
                 {
-                    prevNode = node;
+                    node[i] = null;
+                    node[i] = node[i + 1];
+                    node[i + 1] = null;
+                    break;
                 }
-                node = node.Next;
-            }
-            if (prevNode == null)
-            {
-                this.Lists[src] = node.Next;
-            }
-            else
-            {
-                prevNode.Next = node.Next;
             }
         }
 
@@ -277,33 +269,37 @@ namespace AL_G
         public bool Contains(int src, int des)
         {
             bool tonTai = false;
-            Node node = this.Lists[src];
-            while (node != null)
+            Node[] node = this.Lists[src];
+            if (node?.Count() > 0)
             {
-                if (node.Dinh == des)
+                for (int i = 0; i < node.Count(x => x != null); i++)
                 {
-                    tonTai = true;
-                    break;
+                    if (node[i]?.Dinh == des)
+                    {
+                        tonTai = true;
+                        break;
+                    }
                 }
-                node = node.Next;
             }
             return tonTai;
         }
 
-        public void InDoThi()
+        public int TrongSoCanh(int src, int des)
         {
-            for (int i = 0; i < this.soDinh; i++)
+            int trongSo = 0;
+            Node[] node = this.Lists[src];
+            if (node?.Count() > 0)
             {
-                Console.WriteLine("Đỉnh {0}:", i);
-                Node node = this.Lists[i];
-                while (node != null)
+                for (int i = 0; i < node.Count(x => x != null); i++)
                 {
-                    Console.WriteLine(" -> {0}, ({1})", node.Dinh, node.TrongSo);
-                    node = node.Next;
+                    if (node[i]?.Dinh == des)
+                    {
+                        trongSo = (int)(node[i]?.TrongSo);
+                        break;
+                    }
                 }
             }
+            return trongSo;
         }
     }
-
-
 }

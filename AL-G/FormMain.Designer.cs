@@ -41,6 +41,7 @@ namespace AL_G
             this.btnDocFile = new System.Windows.Forms.Button();
             this.btnLuuDT = new System.Windows.Forms.Button();
             this.txtTimming = new System.Windows.Forms.TextBox();
+            this.cbxCTDL = new System.Windows.Forms.ComboBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvDsk)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbDoThi)).BeginInit();
             this.SuspendLayout();
@@ -54,7 +55,7 @@ namespace AL_G
             this.dgvDsk.Name = "dgvDsk";
             this.dgvDsk.RowHeadersWidth = 90;
             this.dgvDsk.RowTemplate.Height = 24;
-            this.dgvDsk.Size = new System.Drawing.Size(596, 481);
+            this.dgvDsk.Size = new System.Drawing.Size(596, 720);
             this.dgvDsk.TabIndex = 0;
             // 
             // txtSlDinh
@@ -79,22 +80,25 @@ namespace AL_G
             // btnNhapDinh
             // 
             this.btnNhapDinh.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnNhapDinh.Location = new System.Drawing.Point(240, 21);
+            this.btnNhapDinh.Location = new System.Drawing.Point(643, 12);
             this.btnNhapDinh.Name = "btnNhapDinh";
             this.btnNhapDinh.Size = new System.Drawing.Size(158, 40);
             this.btnNhapDinh.TabIndex = 3;
             this.btnNhapDinh.Text = "Nhập đỉnh";
             this.btnNhapDinh.UseVisualStyleBackColor = true;
+            this.btnNhapDinh.Visible = false;
             this.btnNhapDinh.Click += new System.EventHandler(this.btnNhapDinh_Click);
             // 
             // pbDoThi
             // 
-            this.pbDoThi.Location = new System.Drawing.Point(643, 48);
+            this.pbDoThi.Location = new System.Drawing.Point(643, 91);
             this.pbDoThi.Name = "pbDoThi";
-            this.pbDoThi.Size = new System.Drawing.Size(857, 654);
+            this.pbDoThi.Size = new System.Drawing.Size(1127, 850);
             this.pbDoThi.TabIndex = 4;
             this.pbDoThi.TabStop = false;
             this.pbDoThi.Paint += new System.Windows.Forms.PaintEventHandler(this.pbDoThi_Paint);
+            this.pbDoThi.MouseMove += new System.Windows.Forms.MouseEventHandler(this.pbDoThi_MouseMove);
+            this.pbDoThi.MouseUp += new System.Windows.Forms.MouseEventHandler(this.pbDoThi_MouseUp);
             // 
             // chkbCoHuong
             // 
@@ -112,7 +116,7 @@ namespace AL_G
             // 
             this.chkbCoTrongSo.AutoSize = true;
             this.chkbCoTrongSo.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.chkbCoTrongSo.Location = new System.Drawing.Point(177, 91);
+            this.chkbCoTrongSo.Location = new System.Drawing.Point(156, 91);
             this.chkbCoTrongSo.Name = "chkbCoTrongSo";
             this.chkbCoTrongSo.Size = new System.Drawing.Size(159, 33);
             this.chkbCoTrongSo.TabIndex = 6;
@@ -123,7 +127,7 @@ namespace AL_G
             // btnRandom
             // 
             this.btnRandom.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnRandom.Location = new System.Drawing.Point(433, 21);
+            this.btnRandom.Location = new System.Drawing.Point(244, 21);
             this.btnRandom.Name = "btnRandom";
             this.btnRandom.Size = new System.Drawing.Size(180, 40);
             this.btnRandom.TabIndex = 7;
@@ -134,12 +138,13 @@ namespace AL_G
             // btnVeDoThi
             // 
             this.btnVeDoThi.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnVeDoThi.Location = new System.Drawing.Point(429, 91);
+            this.btnVeDoThi.Location = new System.Drawing.Point(820, 12);
             this.btnVeDoThi.Name = "btnVeDoThi";
             this.btnVeDoThi.Size = new System.Drawing.Size(180, 40);
             this.btnVeDoThi.TabIndex = 8;
             this.btnVeDoThi.Text = "Vẽ đồ thị";
             this.btnVeDoThi.UseVisualStyleBackColor = true;
+            this.btnVeDoThi.Visible = false;
             this.btnVeDoThi.Click += new System.EventHandler(this.btnVeDoThi_Click);
             // 
             // btnDocFile
@@ -173,11 +178,26 @@ namespace AL_G
             this.txtTimming.Size = new System.Drawing.Size(245, 40);
             this.txtTimming.TabIndex = 11;
             // 
+            // cbxCTDL
+            // 
+            this.cbxCTDL.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbxCTDL.Font = new System.Drawing.Font("Microsoft Sans Serif", 13.8F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.cbxCTDL.FormattingEnabled = true;
+            this.cbxCTDL.Items.AddRange(new object[] {
+            "Danh sách liên kết đơn",
+            "Ngăn xếp"});
+            this.cbxCTDL.Location = new System.Drawing.Point(331, 87);
+            this.cbxCTDL.Name = "cbxCTDL";
+            this.cbxCTDL.Size = new System.Drawing.Size(282, 37);
+            this.cbxCTDL.TabIndex = 12;
+            this.cbxCTDL.SelectedIndexChanged += new System.EventHandler(this.cbxCTDL_SelectedIndexChanged);
+            // 
             // FormMain
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1512, 753);
+            this.ClientSize = new System.Drawing.Size(1782, 953);
+            this.Controls.Add(this.cbxCTDL);
             this.Controls.Add(this.txtTimming);
             this.Controls.Add(this.btnLuuDT);
             this.Controls.Add(this.btnDocFile);
@@ -213,6 +233,7 @@ namespace AL_G
         private System.Windows.Forms.Button btnDocFile;
         private System.Windows.Forms.Button btnLuuDT;
         private System.Windows.Forms.TextBox txtTimming;
+        private System.Windows.Forms.ComboBox cbxCTDL;
     }
 }
 

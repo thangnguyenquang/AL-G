@@ -17,20 +17,26 @@ namespace AL_G
         List<Dinh> dinh = new List<Dinh>();
         Graphics g;
         Random random = new Random();
+        Dinh selectNode = new Dinh();
+
         public FormMain()
         {
             InitializeComponent();
         }
 
         int soDinh;
+        DoThi doThi;
         public bool coHuong = false;
         public bool coTrongSo = false;
 
+        public bool linkedList = false;
+        public bool stack = false;
 
         private void btnNhapDinh_Click(object sender, EventArgs e)
         {
             dgvDsk.Rows.Clear();
             dgvDsk.ReadOnly = false;
+            
             soDinh = int.Parse(txtSlDinh.Text);
 
             if (soDinh <= 1)
@@ -65,18 +71,24 @@ namespace AL_G
                 listPoint.Add(new Point(x, y));
             }
         }
+
+        private void ToaDoCoTrongSo(List<Point> listPoint)
+        {
+
+        }
+
         private void TaoDinh()
         {
             dinh = new List<Dinh>();
             for (int i = 0; i < soDinh; i++)
             {
                 Dinh d = new Dinh();
-                d.Location = new Point(random.Next(5, 610), random.Next(5, 510));
+                //d.Location = new Point(random.Next(5, 1100), random.Next(5, 800));
                 d.Location = listPoint[i];
                 d.ID = (i);
                 d.Ten.Text = (i).ToString();
-                //n.MouseDown += new MouseEventHandler(Node_MouseDown);
-                //n.MouseUp += new MouseEventHandler(Node_MouseUp);
+                d.MouseDown += new MouseEventHandler(Node_MouseDown);
+                d.MouseUp += new MouseEventHandler(Node_MouseUp);
                 dinh.Add(d);
             }
         }
@@ -88,6 +100,26 @@ namespace AL_G
                 if (dinh[i].ID != -1)
                     pbDoThi.Controls.Add(dinh[i]);
         }
+
+        void Node_MouseDown(object sender, MouseEventArgs e)
+        {
+            selectNode = (Dinh)sender;
+            selectNode.Enabled = false;
+            //selectNode.Tag = selectNode.BackColor;
+            //selectNode.BackColor = Color.Red;
+        }
+
+        void Node_MouseUp(object sender, MouseEventArgs e)
+        {
+            selectNode = (Dinh)sender;
+            if (selectNode != null)
+            {
+                selectNode.Enabled = true;
+                //selectNode.BackColor = Color.DeepSkyBlue;
+            }
+            NoiDinh(doThi);
+        }
+
         private void NoiDinh(DoThi doThi)
         {
             g.Clear(pbDoThi.BackColor); //set màu cho BackGround
@@ -150,6 +182,64 @@ namespace AL_G
                 }
             }
         }
+
+        private void NoiDinhStack(DoThiStack doThi)
+        {
+            g.Clear(pbDoThi.BackColor); //set màu cho BackGround
+            Pen p = new Pen(Color.Black, 1);
+            if (coHuong)
+            {
+                //p.EndCap = LineCap.ArrowAnchor;
+                AdjustableArrowCap bigArrow = new AdjustableArrowCap(5, 5);
+                p.CustomEndCap = bigArrow;
+            }
+            else
+            {
+                p.EndCap = LineCap.NoAnchor;
+            }
+
+            for (int i = 0; i < soDinh; i++)
+            {
+
+                Node[] node = doThi.Lists[i];
+                doThi.top = node.Count(x => x != null) - 1;
+                while (!doThi.IsEmpty() && node != null)
+                {
+                    Node data = doThi.LayCanh(i);
+                    if (coTrongSo)
+                    {
+                        int k = data.Dinh;
+                        if (k < 0) continue;
+                        int x = Math.Abs(dinh[i].Tam.X + dinh[k].Tam.X);
+                        x = x / 2;
+                        int y = Math.Abs(dinh[i].Tam.Y + dinh[k].Tam.Y);
+                        y = y / 2;
+
+                        Point trungdiem = new Point(x, y);
+
+                        g.DrawLine(p, dinh[i].Tam, trungdiem);
+                        g.DrawLine(p, trungdiem, dinh[k].Tam);
+                        g.DrawString(data.TrongSo.ToString(), this.Font, Brushes.Black, x + 6, y + 6);
+                    }
+                    else
+                    {
+                        int k = data.Dinh;
+                        if (k < 0) continue;
+                        int x = Math.Abs(dinh[i].Tam.X + dinh[k].Tam.X);
+                        x = x / 2;
+                        int y = Math.Abs(dinh[i].Tam.Y + dinh[k].Tam.Y);
+                        y = y / 2;
+
+                        Point trungdiem = new Point(x, y);
+
+                        g.DrawLine(p, dinh[i].Tam, trungdiem);
+                        g.DrawLine(p, trungdiem, dinh[k].Tam);
+
+                    }
+                }
+            }
+        }
+
         private void VeDoThi(DoThi doThi)
         {
             TinhToanToaDo(soDinh);
@@ -157,6 +247,15 @@ namespace AL_G
             HienDinh();
             NoiDinh(doThi);
         }
+
+        private void VeDoThiStack(DoThiStack doThi)
+        {
+            TinhToanToaDo(soDinh);
+            TaoDinh();
+            HienDinh();
+            NoiDinhStack(doThi);
+        }
+
 
         private void pbDoThi_Paint(object sender, PaintEventArgs e)
         {
@@ -194,6 +293,12 @@ namespace AL_G
         {
             Timming timming = new Timming();
             timming.Start();
+
+            if (!linkedList && !stack)
+            {
+                cbxCTDL.SelectedIndex = 0;
+            }
+
             dgvDsk.Rows.Clear();
             Random random = new Random();
             if (!string.IsNullOrEmpty(txtSlDinh.Text))
@@ -202,61 +307,123 @@ namespace AL_G
             }
             else
             {
-                soDinh = random.Next(2, 12);
+                soDinh = random.Next(3, 13);
             }
-            if (soDinh <= 1)
+            if (soDinh <= 2)
             {
-                MessageBox.Show("Số đỉnh phải lớn hơn 1");
+                MessageBox.Show("Số đỉnh phải lớn hơn 2");
                 return;
             }
-            DoThi doThi = new DoThi(soDinh);
-            int soDinhKe;
-            if (coTrongSo)
+            if (linkedList)
             {
-                int dinhKe;
-                int trongSo;
-                for (int i = 0; i < soDinh; i++)
+                doThi = new DoThi(soDinh);
+                int soDinhKe;
+                if (coTrongSo)
                 {
-                    soDinhKe = random.Next(1, soDinh - 1);
-                    for (int j = 0; j < soDinhKe; j++)
+                    int dinhKe;
+                    int trongSo;
+                    for (int i = 0; i < soDinh; i++)
                     {
-                        dinhKe = random.Next(0, soDinh);
-                        while (dinhKe == i || doThi.Contains(i, dinhKe))
+                        soDinhKe = random.Next(1, soDinh - 1);
+                        for (int j = 0; j < soDinhKe; j++)
                         {
                             dinhKe = random.Next(0, soDinh);
+                            while (dinhKe == i || doThi.Contains(i, dinhKe))
+                            {
+                                dinhKe = random.Next(0, soDinh);
+                            }
+                            trongSo = random.Next(1, 10);
+                            doThi.ThemCanh(i, dinhKe, trongSo);
                         }
-                        trongSo = random.Next(1, 10);
-                        doThi.ThemCanh(i, dinhKe, trongSo);
                     }
                 }
-            }
-            else
-            {
-                int dinhKe;
-                for (int i = 0; i < soDinh; i++)
+                else
                 {
-                    soDinhKe = random.Next(1, soDinh - 1);
-                    for (int j = 0; j < soDinhKe; j++)
+                    int dinhKe;
+                    for (int i = 0; i < soDinh; i++)
                     {
-                        dinhKe = random.Next(0, soDinh);
-                        while (dinhKe == i || doThi.Contains(i, dinhKe))
+                        soDinhKe = random.Next(1, soDinh - 1);
+                        for (int j = 0; j < soDinhKe; j++)
                         {
                             dinhKe = random.Next(0, soDinh);
+                            while (dinhKe == i || doThi.Contains(i, dinhKe))
+                            {
+                                dinhKe = random.Next(0, soDinh);
+                            }
+                            doThi.ThemCanh(i, dinhKe);
                         }
-                        doThi.ThemCanh(i, dinhKe);
                     }
                 }
+                if (coHuong)
+                {
+                    DoThiCoHuong(doThi);
+                }
+                else
+                {
+                    DoThiVoHuong(doThi);
+                    if (coTrongSo)
+                    {
+                        DoThiCoTrongSo(doThi);
+                    }
+                }
+
+                HienDanhSachKe(doThi);
+                VeDoThi(doThi);
             }
-            if (coHuong)
+
+            if (stack)
             {
-                DoThiCoHuong(doThi);
+                DoThiStack doThi = new DoThiStack(soDinh);
+                int soDinhKe;
+                if (coTrongSo)
+                {
+                    int dinhKe;
+                    int trongSo;
+                    for (int i = 0; i < soDinh; i++)
+                    {
+                        doThi.top = -1;
+                        soDinhKe = random.Next(1, soDinh - 1);
+                        for (int j = 0; j < soDinhKe; j++)
+                        {
+                            dinhKe = random.Next(0, soDinh);
+                            while (dinhKe == i || doThi.Contains(i, dinhKe))
+                            {
+                                dinhKe = random.Next(0, soDinh);
+                            }
+                            trongSo = random.Next(1, 10);
+                            doThi.ThemCanh(i, dinhKe, trongSo);
+                        }
+                    }
+                }
+                else
+                {
+                    int dinhKe;
+                    for (int i = 0; i < soDinh; i++)
+                    {
+                        doThi.top = -1;
+                        soDinhKe = random.Next(1, soDinh - 1);
+                        for (int j = 0; j < soDinhKe; j++)
+                        {
+                            dinhKe = random.Next(0, soDinh);
+                            while (dinhKe == i || doThi.Contains(i, dinhKe))
+                            {
+                                dinhKe = random.Next(0, soDinh);
+                            }
+                            doThi.ThemCanh(i, dinhKe);
+                        }
+                    }
+                }
+                //if (coHuong)
+                //{
+                //    DoThiCoHuongStack(doThi);
+                //}
+                //else
+                //{
+                //    DoThiVoHuongStack(doThi);
+                //}
+                HienDanhSachKeStack(doThi);
+                VeDoThiStack(doThi);
             }
-            else
-            {
-                DoThiVoHuong(doThi);
-            }
-            HienDanhSachKe(doThi);
-            VeDoThi(doThi);
 
             timming.Stop();
             txtTimming.Text = $"{timming.Time()} (ms)";
@@ -280,17 +447,6 @@ namespace AL_G
                             doThi.ThemCanh(node.Dinh, i);
                         }
                     }
-                    else
-                    {
-                        if (coTrongSo)
-                        {
-                            if (node.TrongSo != doThi.TrongSoCanh(i, node.Dinh))
-                            {
-                                doThi.XoaCanh(node.Dinh, i);
-                                doThi.ThemCanh(node.Dinh, i, node.TrongSo);
-                            }
-                        }
-                    }
                     node = node.Next;
                 }
             }
@@ -308,6 +464,108 @@ namespace AL_G
                         doThi.XoaCanh(node.Dinh, i);
                     }
                     node = node.Next;
+                }
+            }
+        }
+
+        private void DoThiCoTrongSo(DoThi doThi)
+        {
+            for (int i = 0; i < soDinh; i++)
+            {
+                Node node = doThi.Lists[i];
+                while (node != null)
+                {
+                    if (doThi.Contains(node.Dinh, i))
+                    {
+                        if (node.TrongSo != doThi.TrongSoCanh(node.Dinh, i))
+                        {
+                            node.TrongSo = doThi.TrongSoCanh(node.Dinh, i);
+                        }
+                    }                   
+                    node = node.Next;
+                }
+            }
+        }
+
+        private void DoThiVoHuongStack(DoThiStack doThi)
+        {
+            for (int i = 0; i < soDinh; i++)
+            {
+                Node[] listNode = doThi.Lists[i];
+                doThi.top = listNode.Count(x => x != null) - 1;
+                while (!doThi.IsEmpty() && listNode != null)
+                {
+                    Node data = doThi.LayCanh(i);
+                    Node[] listNodeKe = doThi.Lists[data.Dinh];
+                    doThi.top = listNodeKe.Count(x => x != null) - 1;
+                    if (!doThi.Contains(data.Dinh, i))
+                    {
+                        if (coTrongSo)
+                        {
+                            doThi.ThemCanh(data.Dinh, i, data.TrongSo);
+                        }
+                        else
+                        {
+                            doThi.ThemCanh(data.Dinh, i);
+                        }
+                    }
+                    else
+                    {
+                        if (coTrongSo)
+                        {
+                            if (data.TrongSo != doThi.TrongSoCanh(i, data.Dinh))
+                            {
+                                data.TrongSo = doThi.TrongSoCanh(i, data.Dinh);
+                            }
+                        }
+                    }
+                }
+
+            }
+        }
+     
+        private void DoThiCoHuongStack(DoThiStack doThi)
+        {
+            for (int i = 0; i < soDinh; i++)
+            {
+                Node[] node = doThi.Lists[i];
+                doThi.top = node.Count(x => x != null) - 1;
+                while (!doThi.IsEmpty() && node != null)
+                {
+                    Node data = doThi.LayCanh(i);
+                    if (doThi.Contains(data.Dinh, i))
+                    {
+                        doThi.XoaCanh(data.Dinh, i);
+                    }
+                }
+            }
+        }
+
+        private void HienDanhSachKeStack(DoThiStack doThi)
+        {
+            dgvDsk.Rows.Clear();
+            dgvDsk.ColumnCount = soDinh;
+            dgvDsk.RowCount = soDinh;
+            dgvDsk.ReadOnly = true;
+
+            for (int i = 0; i < soDinh; i++)
+            {
+                dgvDsk.Rows[i].HeaderCell.Value = "Đỉnh " + i + "";
+                Node[] node = doThi.Lists[i];
+                doThi.top = node.Count(x => x != null) - 1;
+                int j = 0;
+                while (!doThi.IsEmpty() && node != null)
+                {
+                    Node data = doThi.LayCanh(i);
+                    if (coTrongSo)
+                    {
+                        dgvDsk.Rows[i].Cells[j].Value = data.Dinh + "-" + data.TrongSo;
+                    }
+                    else
+                    {
+                        dgvDsk.Rows[i].Cells[j].Value = data.Dinh;
+                    }
+                    j++;
                 }
             }
         }
@@ -380,7 +638,7 @@ namespace AL_G
                         for (int i = 0; i < dgvDsk.Rows.Count; i++)
                         {
                             int j = 0;
-                            if(dgvDsk.Rows[i].Cells[j].Value == null)
+                            if (dgvDsk.Rows[i].Cells[j].Value == null)
                             {
                                 sWriter.WriteLine();
                             }
@@ -528,6 +786,38 @@ namespace AL_G
             }
             timming.Stop();
             txtTimming.Text = $"{timming.Time()} (ms)";
+        }
+
+        private void cbxCTDL_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            if (cbxCTDL.SelectedIndex == 0)
+            {
+                linkedList = true;
+                stack = false;
+            }
+            else
+            {
+                linkedList = false;
+                stack = true;
+            }
+        }
+
+        private void pbDoThi_MouseMove(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Left)
+            {
+                selectNode.Location = e.Location;
+                NoiDinh(doThi);
+            }
+        }
+
+        private void pbDoThi_MouseUp(object sender, MouseEventArgs e)
+        {
+            if (selectNode != null)
+            {
+                selectNode.Enabled = true;
+            }
+            NoiDinh(doThi);
         }
     }
 }
