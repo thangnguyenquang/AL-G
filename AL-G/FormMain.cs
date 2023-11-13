@@ -36,7 +36,7 @@ namespace AL_G
         {
             dgvDsk.Rows.Clear();
             dgvDsk.ReadOnly = false;
-            
+
             soDinh = int.Parse(txtSlDinh.Text);
 
             if (soDinh <= 1)
@@ -70,12 +70,45 @@ namespace AL_G
 
                 listPoint.Add(new Point(x, y));
             }
+            //if (coTrongSo)
+            //{
+            //    ToaDoCoTrongSo(listPoint);
+            //}
         }
 
-        private void ToaDoCoTrongSo(List<Point> listPoint)
-        {
+        //private void ToaDoCoTrongSo(List<Point> listPoint)
+        //{
+        //    for (int i = 0; i < soDinh; i++)
+        //    {
+        //        Node node = doThi.Lists[i];
+        //        while (node != null)
+        //        {
+        //            int x2 = listPoint[node.Dinh].X;
+        //            int y2 = listPoint[node.Dinh].Y;
+        //            int x1 = listPoint[i].X;
+        //            int y1 = listPoint[i].Y;
+        //            int khoangCach = (int)Math.Sqrt((x2 - x1) ^ 2 + (y2 - y1) ^ 2);
 
-        }
+        //            if (khoangCach == node.TrongSo)
+        //            {
+        //                node = node.Next;
+        //            }
+        //            else
+        //            {
+        //                //double angle = Math.Atan2(y2 - y1, x2 - x1);
+        //                double angle = 0;
+        //                if (i != 0)
+        //                {
+        //                    angle += (double)((2 * Math.PI) / soDinh);
+        //                }
+        //                int x = (int)(x1 + node.TrongSo * Math.Cos(angle));
+        //                int y = (int)(y1 + node.TrongSo * Math.Sin(angle));
+        //                listPoint[node.Dinh] = new Point(x + (int)((100 - 325) * Math.Cos(angle) - (275 - 275) * Math.Sin(angle) + 325), y + (int)((100 - 325) * Math.Sin(angle) + (275 - 275) * Math.Cos(angle) + 275));
+        //                node = node.Next;
+        //            }
+        //        }
+        //    }
+        //}
 
         private void TaoDinh()
         {
@@ -105,8 +138,6 @@ namespace AL_G
         {
             selectNode = (Dinh)sender;
             selectNode.Enabled = false;
-            //selectNode.Tag = selectNode.BackColor;
-            //selectNode.BackColor = Color.Red;
         }
 
         void Node_MouseUp(object sender, MouseEventArgs e)
@@ -115,14 +146,13 @@ namespace AL_G
             if (selectNode != null)
             {
                 selectNode.Enabled = true;
-                //selectNode.BackColor = Color.DeepSkyBlue;
             }
             NoiDinh(doThi);
         }
 
         private void NoiDinh(DoThi doThi)
         {
-            g.Clear(pbDoThi.BackColor); //set màu cho BackGround
+            g.Clear(pbDoThi.BackColor);
             Pen p = new Pen(Color.Black, 1);
             if (coHuong)
             {
@@ -481,7 +511,7 @@ namespace AL_G
                         {
                             node.TrongSo = doThi.TrongSoCanh(node.Dinh, i);
                         }
-                    }                   
+                    }
                     node = node.Next;
                 }
             }
@@ -523,7 +553,7 @@ namespace AL_G
 
             }
         }
-     
+
         private void DoThiCoHuongStack(DoThiStack doThi)
         {
             for (int i = 0; i < soDinh; i++)
